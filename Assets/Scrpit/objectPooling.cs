@@ -2,59 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class pool
+{
+    public string poolName;
+    public int poolSize;
+    public GameObject poolPrefab;
+}
+
 public class objectPooling : MonoBehaviour
 {
-    #region Variables
+    public List<pool> poolObjects = new List<pool>();
+    public Dictionary<string, Queue<GameObject>> poolDictionary;
     public static objectPooling instance;
-
-    [Header("object Pooling Properties")]
-    [Tooltip("Prefab that you want to pool")]
-    public GameObject poolObject;
-
-    public int totalObjects = 10;
-
-    public bool canGrow = false;
-    public int counter = 0;
-
-    private List<GameObject> freeList = new List<GameObject>();
-    private List<GameObject> usedList = new List<GameObject>();
-    #endregion
-    #region BuiltIn Methods
     private void Awake()
     {
         instance = this;
-
-
-        for (int i = 0; i < totalObjects; i++)
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        foreach (pool item in poolObjects)
         {
-            GenerateObjects();
+            Queue<GameObject> objectinQPool = new Queue<GameObject>();
+            for (int i = 0; i < item.poolSize; i++)
+            {
+                GameObject temp = Instantiate(item.poolPrefab);
+                temp.SetActive(false);
+                temp.transform.parent = this.transform;
+                objectinQPool.Enqueue(temp);
+            }
+            poolDictionary.Add(item.poolName, objectinQPool);
         }
     }
-    #endregion
-    #region Custom Methods
-    void GenerateObjects()
+
+    public GameObject SpwanFrompool(string poolName, Vector3 position, Quaternion rotation)
     {
-        GameObject obj = Instantiate(poolObject, transform);
-        obj.SetActive(false);
-        freeList.Add(obj);
+        GameObject temp = poolDictionary[poolName].Dequeue();
+        temp.SetActive(true);
+        temp.transform.position = position;
+        temp.transform.rotation = rotation;
+        poolDictionary[poolName].Enqueue(temp);
+        return temp;
     }
-    public GameObject GetObject()
+
+    // Update is called once per frame
+    void Update()
     {
-        GameObject obj = null;
-        counter = freeList.Count;
-        if (counter > 0)
-        {
-            obj = freeList[counter - 1];
-            freeList.Remove(obj);
-            usedList.Add(obj);
-        }
-        return obj;
+
     }
-    public void ReturnObject(GameObject obj)
-    {
-        obj.SetActive(false);
-        usedList.Remove(obj);
-        freeList.Add(obj);
-    }
-    #endregion
 }
