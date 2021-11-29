@@ -17,10 +17,16 @@ public class Playermotion : MonoBehaviour
     public Healthbar healthbar;
     public Animator anim;
     public UImanager ui;
+
+    private Vector3 _rotate;
+    public float rotationSpeed = 15f;
+
     // Start is called before the first frame update
     void Awake()
     {
         actions = new Playerinput();
+        actions.Player.Look.performed += ctx => _rotate = ctx.ReadValue<Vector2>();
+        actions.Player.Look.canceled += ctx => _rotate = Vector2.zero;
     }
     private void OnEnable()
     {
@@ -63,11 +69,16 @@ public class Playermotion : MonoBehaviour
     }
     void RotatePlayer()
     {
-        if (!Pausemenu.GameIsPaused)
+        //if (!Pausemenu.GameIsPaused)//pc
+        //{
+        //    Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+        //    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        //    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        //}
+        if (!Pausemenu.GameIsPaused)//android
         {
-            Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            Vector3 rotatePlayer = Vector3.forward * _rotate.x * rotationSpeed * Time.deltaTime;
+            transform.Rotate(rotatePlayer * rotationSpeed, Space.Self);
         }
     }
     void shoot()

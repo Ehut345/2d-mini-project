@@ -428,7 +428,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1945.4333, y: 1097.563}
+  m_SizeDelta: {x: 3004.8596, y: 1796.9902}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &236688864
 MonoBehaviour:
@@ -1372,7 +1372,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: All types of enemies has 2-HP and player has 10-HP. There is a mini map
-    at top right conner for enemies Heads-Up.
+    at top right conner for enemies Heads-Up. Tap in the direction of the enemy to
+    fire.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 85263ebc06a6ef443b47e08f1251a9ed, type: 2}
   m_sharedMaterial: {fileID: -1821395618225346870, guid: 85263ebc06a6ef443b47e08f1251a9ed, type: 2}
