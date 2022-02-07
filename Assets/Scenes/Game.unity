@@ -810,7 +810,6 @@ MonoBehaviour:
   healthbar: {fileID: 1332475881}
   anim: {fileID: 461927764}
   ui: {fileID: 2100999125}
-  rotationSpeed: 20
 --- !u!212 &461927760
 SpriteRenderer:
   m_ObjectHideFlags: 0
